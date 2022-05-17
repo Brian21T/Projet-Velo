@@ -7,7 +7,6 @@ lcd.scan()
 addr = 0x72
 
 def lcd_write(x):
-    #lcd.writeto(addr,'\x7C') 
     lcd.writeto(addr,x)
 
 def lcd_clear():
