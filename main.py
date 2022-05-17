@@ -71,14 +71,6 @@ def adc_v():
     global voltagex, voltage
     voltage = adc.read_u16()
     voltagex = (0.0036581796897864 * voltage)-139.74246414984
-#     print(voltage)
-#     voltagex = 0.00006219*voltage - 0.815
-#     print(voltagex)
-#     voltagex = 73.52*voltagex - 139.7
-    #print(voltage)
-    #lcd_clear()
-    #lcd_write("Batterie: {:02.2f}%".format(voltage))
-    #time.sleep(1)
 #---------------------------------------------------------------#
 #----------------------------ADC END----------------------------#
 #---------------------------------------------------------------#
@@ -221,11 +213,8 @@ def bluetooth(pin):
     if uart.any():
         time.sleep(0.05) #Delay pour bien lire les donnees recu
         command = uart.read()
-        #print(command)
         x = command.decode()
-        #print(x)
         if (x[0] == 'r' and x[1] == 'o'):
-        #if (x[0] == 'ro'):
             y = x.split()
             x = [s.replace("\x00", "") for s in y]
             print(x)
@@ -234,12 +223,9 @@ def bluetooth(pin):
             dst = (x[3])
         if (x[0] == 'a'):
             red_blink()
-            #print(rpm + " " + kmh + " " + dst)
         if (x[0] == 'g' and x[1] == 'p' and x[2] == 's') :
             x = x.replace(',', '')
             coordinates_string = x.replace('-', '')
-            #coordinates = x.split()
-            #print(coordinates_string)
             latitude = float(coordinates_string[4:13])
             longitude = (float(coordinates_string[15:24]))*-1
             print("Latitude: {} Longitude: {} ".format( \
@@ -253,9 +239,7 @@ def bluetooth(pin):
             lcd_write('|' '+' '\x00' '\x00' '\x00')
             lcd_clear()
             
-
         if (x[0] == 'd' and x[1] == 'a' and x[2] == 't' and x[3] == 'a') :
-            #print("Data Request")
             lcd_clear()
             lcd_write('|' '+' '\xBB' '\xBB' '\xBB')
             lcd_clear()
@@ -272,38 +256,7 @@ Pin(1).irq(trigger = Pin.IRQ_FALLING, handler = bluetooth)
 
 #---------------------------------------------------------------#
 #-------------------------BLUETOOTH END-------------------------#
-#---------------------------------------------------------------#
-
-#---------------------------------------------------------------#
-#-----------------------------GPS DATA--------------------------#
-#---------------------------------------------------------------#  
-# def gps_data():
-#     global d
-#     if uart.any():
-#         command = uart.read()
-#         x=command.decode()
-#         print("commande recu: ", x)
-#         print(command)
-#         print("Decode",x)
-#         if (x[0] == 'g' and x[1] == 'p' and x[2] == 's') :
-#             coordinates = x.split()
-#             coordinate_latitude = coordinates[1]
-#             coordinate_longitude = coordinates[2]
-#             print("Latitude: {} Longitude: {} ".format( \
-#                   coordinate_latitude,coordinate_longitude))
-#             lcd_write('|' '+' '\xBB' '\xBB' '\xBB')
-#             lcd_clear()
-#             lcd_write("Direction Received")
-#             time.sleep(2)
-# 
-#         elif (x[0] == 'd' and x[1] == 'a' and x[2] == 't' and x[3] == 'a') :
-#             print("Data Request")
-#             time.sleep(2)
-#             uart.write("Voici les donnyees")
-#             time.sleep(2)
-#---------------------------------------------------------------#
-#--------------------------GPS DATA END-------------------------#
-#---------------------------------------------------------------#            
+#---------------------------------------------------------------#         
 
 #---------------------------------------------------------------#
 #------------------------------GPS------------------------------#
@@ -325,13 +278,9 @@ def gps_fnc():
     
     gps_module.readline()
     buff = str(gps_module.readline())
-    #print(buff)
-    
+     
     for o in buff:
         my_gps.update(o)
-
-    ##calcul_longitude()
-    ##calcul_latitude()
         
     DMS_long = my_gps.longitude_string()
     
@@ -362,19 +311,18 @@ def gps_fnc():
 #     long_b = -73.553273
 #     lat_b = 45.578803598131465 #Parking au campus
 #     long_b = -73.54461894165416
+
 #     lat_b = 45.578995185409475 #Coin de rue parking
 #     long_b = -73.54409558838304
+
     lat_b = latitude
     long_b = longitude
-#     print("Latitude: {} Longitude: {} ".format( \
-#       latitude,longitude))
      
     x = cos(radians(lat_b)) * sin(radians(long_b - long_a))
     y = (cos(radians(lat_a)) * sin(radians(lat_b))) - (sin(radians(lat_a)) * cos(radians(lat_b)) * cos(radians(long_a - long_b)))
 
     bearing_rad = atan2(x,y)
     bearing_degree = degrees(bearing_rad)
-    
     
     if bearing_degree > 0:
         bearing_degree = bearing_degree -360
@@ -384,18 +332,12 @@ def gps_fnc():
     if bearing_degree < 0:
         var = 360
         bearing_degree = bearing_degree + 360
-        
-    #print(bearing_degree)
-    #print("Latitude:{} Longitude:{} ".format(lat, lon))
-    #print("time: "+str(my_gps.timestamp))
     
     lat1 = lat_a
     lon1 = long_a
     lat2 = lat_b
     lon2 = long_b
     
-    #print(my_gps.compass_direction())
-
     if my_gps.compass_direction() == "N" :
         #direction_gps = (360 - 0) + bearing_degree
         direction_gps = bearing_degree
@@ -463,35 +405,7 @@ def gps_fnc():
             direction_gps = direction_gps - 360      
           
     C = my_gps.compass_direction()
-    d = distance(lat1, lat2, lon1, lon2)
-    #print(distance(lat1, lat2, lon1, lon2), "K.M")
-    #print("{} Km".format(d))
-    #
-    #print(d)
-#     heures = my_gps.timestamp[0]
-#     minutes = my_gps.timestamp[1]
-#     secondes = my_gps.timestamp[2]
-#     secondes = int(secondes)
-  
-#     print(bearing_degree)
-#     print("Latitude:{} Longitude:{} ".format(lat, lon))
-#     print("time: "+str(my_gps.timestamp)) 
-#     lcd_clear()
-#     lcd_write("La{:2} B{} Lo{:5}".format(lat,bearing_degree, lon))
-#     lcd_clear()
-#     lcd_write("B: {:5}  C: {}D: {}".format(direction_gps, C, d))
-#     print(my_gps.compass_direction())
-#     print("direction",direction_gps)
-#     print("bearing  ",bearing_degree)
-#     lcd_clear()
-#     lcd_write("D:{:3.2f}    {:3} B:{:3.2f}".format(direction_gps, C, bearing_degree))
-#     print("RTC time:", rtc.datetime())
-#     print("GPS time:", my_gps.timestamp)
-#     print("Clk time: {:02}:{:02}:{:02}".format(heures,minutes,secondes))
-#     lcd_clear()
-#     lcd_write("{:02}:{:02}:{:02}".format(heures,minutes,secondes))
-#     print(my_gps.date_string())        
-    
+    d = distance(lat1, lat2, lon1, lon2)        
 #---------------------------------------------------------------#
 #----------------------------GPS END----------------------------#
 #---------------------------------------------------------------#
@@ -531,8 +445,6 @@ def lcd_print(timer):
                   .format(my_gps.timestamp[0],my_gps.timestamp[1],secondes, rpmx))
         lcd_write("Kmh:{:2}   D:{:5}".format(kmh, dst))
         
-#         print("{:02}:{:02}:{:02}   C:{:3}"\
-#                   .format(my_gps.timestamp[0],my_gps.timestamp[1],secondes, rpmx))
     if mode == 2:
         di = d*100
         lcd_write('|' '+' '\xBB' '\xBB' '\xBB')
@@ -542,12 +454,7 @@ def lcd_print(timer):
     if mode == 3:
         lcd_write('|' '+' '\xBB' '\xBB' '\xBB')
         lcd_clear()
-        lcd_write("Batterie: {:02.2f}%".format(voltagex))
-        
-#     print("light mode", lights_mode)
-#     print("modes mode", modex)
-#     print("voltagex", voltagex)
-        
+        lcd_write("Batterie: {:02.2f}%".format(voltagex)
 
 tim.init(period=1000, mode=Timer.PERIODIC, callback=lcd_print)
 #---------------------------------------------------------------#
