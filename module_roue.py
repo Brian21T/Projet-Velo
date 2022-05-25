@@ -38,14 +38,12 @@ def calc_speed(radius):
             km_s = distance/(temps)
             km_h = km_s*3600
             distance_m = (distance*a)*1000
-            #print("RPM: {:4.0f}  KM/H: {:3.0f}  Distance: {:5.2f} m".format(rpm, km_h, distance_m))
             
             rpmx = str("{:1.0f}".format(rpm))
             distancex = str("{:1.0f}".format(distance_m))
             km_hx = str("{:1.0f}".format(km_h))
             
             uart.write(rpmx +" "+km_hx + " " +distancex)
-            #time.sleep(0.20)
             print(rpmx +" "+ km_hx + " " +distancex)
             
 print("--Start--")
