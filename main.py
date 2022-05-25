@@ -305,16 +305,6 @@ def gps_fnc():
     lat_a = lat ##from
     long_a = lon
     
-#     lat_b = 45.579100##to  ST-HUBERT
-#     long_b = -73.545834
-#     lat_b = 45.550887 #MAISONNEUVE
-#     long_b = -73.553273
-#     lat_b = 45.578803598131465 #Parking au campus
-#     long_b = -73.54461894165416
-
-#     lat_b = 45.578995185409475 #Coin de rue parking
-#     long_b = -73.54409558838304
-
     lat_b = latitude
     long_b = longitude
      
