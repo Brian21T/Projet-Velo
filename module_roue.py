@@ -57,10 +57,5 @@ while True:
     if uart.any():
         command = uart.read()
         print(command)
-#         commandD = command.decode().strip("\r\n").strip("\x00")
-#         print("Module Arrière:", commandD)
-    #uart.write("Allo")
-    #print("{:3.0f}".format(rpm))
     calc_speed(34.3)
-    #time.sleep(2)
     time.sleep(0.20)
